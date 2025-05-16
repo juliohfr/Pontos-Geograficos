@@ -11,24 +11,24 @@ import android.widget.Toast;
 public class MainActivity extends ListActivity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        String menu [] = new String[] {"Minha casa na cidade natal", "Minha casa em Viçosa", "Meu departamento", "Fechar aplicação"};
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, menu);
-        setListAdapter(arrayAdapter);
+        final String[] menu = new String[]{"Minha casa na cidade natal", "Minha casa em Viçosa", "Meu departamento", "Fechar aplicação"};
+        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, menu);
+        this.setListAdapter(arrayAdapter);
     }
 
     @Override
-    protected void onListItemClick(ListView l, View v, int position, long id) {
-        Intent it = new Intent(this, GeographicPoint.class);
-        String option = l.getItemAtPosition(position).toString();
+    protected void onListItemClick(final ListView l, final View v, final int position, final long id) {
+        final Intent it = new Intent(this, GeographicPoint.class);
+        final String option = l.getItemAtPosition(position).toString();
 
-        if(position == 0 || position == 1 || position == 2){
+        if (position == 0 || position == 1 || position == 2) {
             Toast.makeText(this, option, Toast.LENGTH_SHORT).show();
-            startActivity(it);
-        }else{
-            finish();
+            this.startActivity(it);
+        } else {
+            this.finish();
         }
     }
 }
