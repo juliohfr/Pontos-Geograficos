@@ -1,7 +1,9 @@
 package com.example.pontosgeograficos;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 
@@ -16,11 +18,36 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class GeographicPoint extends Activity implements OnMapReadyCallback {
-    private final LatLng VICOSA = new LatLng(-20.753170, -42.878656);
-    private final LatLng TIMOTEO = new LatLng(-19.545576, -42.656434);
-    private final LatLng DPI = new LatLng(-20.764978, -42.868461);
+    private LatLng VICOSA;
+    private LatLng TIMOTEO;
+    private LatLng DPI;
     private String selectedDestination;
     private GoogleMap map;
+
+    private void getLocationPointsFromDataBase() {
+        final BancoDadosSingleton db = BancoDadosSingleton.getInstance();
+        final Cursor c = db.buscar("Location", new String[]{"descricao", "latitude", "longitude"}, "", "");
+
+        while (c.moveToNext()) {
+            @SuppressLint("Range") final String desc = c.getString(c.getColumnIndex("descricao"));
+            @SuppressLint("Range") final double lat = c.getDouble(c.getColumnIndex("latitude"));
+            @SuppressLint("Range") final double lng = c.getDouble(c.getColumnIndex("longitude"));
+
+            final LatLng point = new LatLng(lat, lng);
+            this.map.addMarker(new MarkerOptions().position(point).title(desc));
+
+            if (desc.equals("Meu apartamento em Viçosa")) {
+                this.VICOSA = point;
+            } else if ("Minha casa em Timóteo".equals(desc)) {
+                this.TIMOTEO = point;
+            } else if ("DPI - UFV".equals(desc)) {
+                this.DPI = point;
+            }
+        }
+
+        c.close();
+        db.fechar();
+    }
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -39,12 +66,9 @@ public class GeographicPoint extends Activity implements OnMapReadyCallback {
     @Override
     public void onMapReady(@NonNull final GoogleMap googleMap) {
         this.map = googleMap;
-
-        this.map.addMarker(new MarkerOptions().position(this.VICOSA).title("Meu apt Viçosa"));
-        this.map.addMarker(new MarkerOptions().position(this.TIMOTEO).title("Minha casa Timóteo"));
-        this.map.addMarker(new MarkerOptions().position(this.DPI).title("DPI - UFV"));
-
         this.map.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+
+        this.getLocationPointsFromDataBase();
 
         LatLng initialTarget = null;
 

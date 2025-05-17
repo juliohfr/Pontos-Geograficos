@@ -17,6 +17,7 @@
         android:required="false" />
 
     <application
+        android:name=".MyApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -41,6 +42,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".GeographicPoint" />
+        <activity android:name=".Report" />
 
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
