@@ -24,6 +24,11 @@ public class MainActivity extends ListActivity {
         final Intent it = new Intent(this, GeographicPoint.class);
         final String option = l.getItemAtPosition(position).toString();
 
+        final Bundle params = new Bundle();
+        params.putString("destination", option);
+
+        it.putExtras(params);
+
         if (position == 0 || position == 1 || position == 2) {
             Toast.makeText(this, option, Toast.LENGTH_SHORT).show();
             this.startActivity(it);

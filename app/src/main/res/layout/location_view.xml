@@ -1,6 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingTop="14dp">
 
     <Button
         android:id="@+id/buttonTimoteo"
@@ -8,7 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:onClick="onClick"
+        android:onClick="onClickLocation"
         android:tag="timoteo"
         android:text="Timóteo" />
 
@@ -18,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:onClick="onClick"
+        android:onClick="onClickLocation"
         android:tag="vicosa"
         android:text="Viçosa" />
 
@@ -28,7 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:onClick="onClick"
+        android:onClick="onClickLocation"
         android:tag="dpi"
         android:text="DPI UFV" />
 
