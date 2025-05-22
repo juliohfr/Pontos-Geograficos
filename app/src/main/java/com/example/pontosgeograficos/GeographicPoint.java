@@ -131,8 +131,12 @@ public class GeographicPoint extends Activity implements OnMapReadyCallback, Loc
     public void onRequestPermissionsResult(final int requestCode, final String[] permissions, final int[] grantResults) {
         if (requestCode == this.LOCATION_CODE_REQUEST) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                this.provider = this.lm.getBestProvider(this.criteria, true);
-                this.provider = LocationManager.GPS_PROVIDER;
+
+                if (this.lm.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                    this.provider = LocationManager.GPS_PROVIDER;
+                } else {
+                    Toast.makeText(this, "GPS desativado. Ative o GPS para usar esta funcionalidade.", Toast.LENGTH_LONG).show();
+                }
 
                 if (this.provider != null) {
                     this.lm.requestLocationUpdates(this.provider, this.TEMPO_REQUISICAO_LATLONG, this.DISTANCIA_MIN_METROS, this);
@@ -205,6 +209,13 @@ public class GeographicPoint extends Activity implements OnMapReadyCallback, Loc
                         .position(latLng)
                         .title("Minha localização")
                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+
+                final Location vicosaLocation = new Location(LocationManager.GPS_PROVIDER);
+                vicosaLocation.setLatitude(this.VICOSA.latitude);
+                vicosaLocation.setLongitude(this.VICOSA.longitude);
+
+                final float distanceFromVicosa = this.currentLocation.distanceTo(vicosaLocation);
+                Toast.makeText(this, "Distância, em metros, até meu apartamento em Vicosa: " + distanceFromVicosa, Toast.LENGTH_LONG).show();
 
                 final CameraUpdate update = CameraUpdateFactory.newLatLngZoom(latLng, 16);
                 this.map.animateCamera(update);
